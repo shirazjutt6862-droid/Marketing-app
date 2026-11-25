@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">من سلوٰی ٹریڈر</string>
+    <string name="shop_subtitle">ہول سیل کریانہ اینڈ جنرل مرچنٹ</string>
+    <string name="shop_default_address">چک 225 احمد نگر، مین ٹینکی والا روڈ، فیصل آباد، نزد یا رسول اللہ مسجد، فیصل آباد۔</string>
+    <string name="nav_home">اسٹور</string>
+    <string name="nav_rates">آج کے ریٹس</string>
+    <string name="nav_cart">کارٹ اور آرڈر</string>
+    <string name="nav_contact">رابطہ و معلومات</string>
+    <string name="nav_admin">ایڈمن پینل</string>
+    <string name="sign_in_google">گوگل کے ساتھ سائن ان کریں</string>
+    <string name="sign_out">سائن آؤٹ</string>
+    <string name="whatsapp_order">واٹس ایپ پر آرڈر بھیجیں</string>
+    <string name="whatsapp_contact">واٹس ایپ رابطہ</string>
+    <string name="search_products_hint">مصنوعات تلاش کریں (آٹا، چاول، چینی...)</string>
+    <string name="all_categories">تمام</string>
+    <string name="special_offers_only">خصوصی آفرز</string>
+</resources>

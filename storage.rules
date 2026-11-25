@@ -1,0 +1,34 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAuthorizedAdmin() {
+      return isSignedIn() && (
+        (
+          'email_verified' in request.auth.token &&
+          'email' in request.auth.token &&
+          request.auth.token.email_verified == true &&
+          request.auth.token.email in ['shiraz6862@gmail.com', 'shirazahmad6862@gmail.com']
+        ) || (
+          'phone_number' in request.auth.token &&
+          request.auth.token.phone_number in ['+923098897096', '+923237644924']
+        )
+      );
+    }
+
+    match /products/{imageFile} {
+      allow read: if isSignedIn();
+      allow write: if isAuthorizedAdmin() &&
+                      request.resource.size < 5 * 1024 * 1024 &&
+                      request.resource.contentType.matches('image/.*');
+      allow delete: if isAuthorizedAdmin();
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

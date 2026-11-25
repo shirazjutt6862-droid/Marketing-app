@@ -1,0 +1,218 @@
+{
+  "entities": {
+    "ShopInfo": {
+      "title": "ShopInfo",
+      "description": "Business identity, Faisalabad address, phone contacts, WhatsApp number, and daily wholesale notice for Mann Salwa Trader.",
+      "type": "object",
+      "properties": {
+        "shopId": { "type": "string", "description": "Constant shop identifier 'mann_salwa'." },
+        "businessName": { "type": "string", "description": "Business name in Urdu." },
+        "address": { "type": "string", "description": "Shop address in Faisalabad." },
+        "contact1Name": { "type": "string", "description": "Primary contact person name." },
+        "contact1Phone": { "type": "string", "description": "Primary contact phone number." },
+        "contact2Name": { "type": "string", "description": "Secondary contact person name." },
+        "contact2Phone": { "type": "string", "description": "Secondary contact phone number." },
+        "whatsappNumber": { "type": "string", "description": "WhatsApp order number." },
+        "announcement": { "type": "string", "description": "Optional daily announcement or notice." },
+        "lastRateUpdateLabel": { "type": "string", "description": "Optional label for latest price update banner." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp on last update." }
+      },
+      "required": [
+        "shopId", "businessName", "address",
+        "contact1Name", "contact1Phone", "contact2Name", "contact2Phone",
+        "whatsappNumber", "createdAt", "updatedAt"
+      ]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Wholesale grocery product category.",
+      "type": "object",
+      "properties": {
+        "shopId": { "type": "string", "description": "Constant shop identifier 'mann_salwa'." },
+        "name": { "type": "string", "description": "Category display name in Urdu." },
+        "sortOrder": { "type": "integer", "description": "Display sort order." },
+        "iconKey": { "type": "string", "description": "Material icon mapping key." },
+        "active": { "type": "boolean", "description": "Whether category is active." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp on last update." }
+      },
+      "required": ["shopId", "name", "sortOrder", "iconKey", "active", "createdAt", "updatedAt"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Wholesale grocery product with packing details, current/previous wholesale price, retail price, availability, offers, and image.",
+      "type": "object",
+      "properties": {
+        "shopId": { "type": "string", "description": "Constant shop identifier 'mann_salwa'." },
+        "name": { "type": "string", "description": "Product name in Urdu." },
+        "category": { "type": "string", "description": "Category name in Urdu." },
+        "packingDetails": { "type": "string", "description": "Weight and packing details." },
+        "wholesalePrice": { "type": "number", "description": "Current wholesale price in PKR." },
+        "previousWholesalePrice": { "type": "number", "description": "Previous wholesale price in PKR." },
+        "retailPrice": { "type": "number", "description": "Suggested retail price in PKR." },
+        "available": { "type": "boolean", "description": "Stock availability flag." },
+        "specialOffer": { "type": "boolean", "description": "Special offer flag." },
+        "trending": { "type": "boolean", "description": "Trending highlight flag." },
+        "stockCount": { "type": "integer", "description": "Optional available stock quantity." },
+        "offerText": { "type": "string", "description": "Optional special offer description." },
+        "imageData": { "type": "string", "description": "Optional HTTPS image URL or compressed base64 data URI." },
+        "updatedByUid": { "type": "string", "description": "UID of admin who created or updated the product." },
+        "priceUpdatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp of latest price update." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp on last update." }
+      },
+      "required": [
+        "shopId", "name", "category", "packingDetails",
+        "wholesalePrice", "previousWholesalePrice", "retailPrice",
+        "available", "specialOffer", "updatedByUid",
+        "priceUpdatedAt", "createdAt", "updatedAt"
+      ]
+    },
+    "PriceUpdate": {
+      "title": "PriceUpdate",
+      "description": "Daily price change log entry showing old price, new price, change amount, and server timestamp.",
+      "type": "object",
+      "properties": {
+        "shopId": { "type": "string", "description": "Constant shop identifier 'mann_salwa'." },
+        "productId": { "type": "string", "description": "Target product document ID." },
+        "productName": { "type": "string", "description": "Product name snapshot." },
+        "category": { "type": "string", "description": "Category snapshot." },
+        "packingDetails": { "type": "string", "description": "Packing details snapshot." },
+        "oldPrice": { "type": "number", "description": "Previous wholesale price." },
+        "newPrice": { "type": "number", "description": "Updated wholesale price." },
+        "changeAmount": { "type": "number", "description": "Signed difference (newPrice - oldPrice)." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp of price change." }
+      },
+      "required": [
+        "shopId", "productId", "productName", "category",
+        "packingDetails", "oldPrice", "newPrice", "changeAmount", "createdAt"
+      ]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer wholesale order submitted via WhatsApp and recorded in Firestore.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Authenticated customer UID." },
+        "customerName": { "type": "string", "description": "Customer or shopkeeper name." },
+        "customerPhone": { "type": "string", "description": "Customer phone number." },
+        "customerAddress": { "type": "string", "description": "Customer shop or delivery address." },
+        "items": { "type": "array", "description": "Bounded list (max 50) of ordered line item maps." },
+        "itemCount": { "type": "integer", "description": "Total quantity of items ordered." },
+        "totalAmount": { "type": "number", "description": "Total wholesale amount in PKR." },
+        "notes": { "type": "string", "description": "Optional order instructions." },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "confirmed", "dispatched", "completed", "cancelled"],
+          "description": "Order fulfillment status."
+        },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp on last update." }
+      },
+      "required": [
+        "userId", "customerName", "customerPhone", "customerAddress",
+        "items", "itemCount", "totalAmount", "status", "createdAt", "updatedAt"
+      ]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Registered customer/shopkeeper account profile with phone number, full name, shop name, city, and admin approval status.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Authenticated user UID." },
+        "phoneNumber": { "type": "string", "description": "Verified E.164 phone number (+92...)." },
+        "displayName": { "type": "string", "description": "Customer full name." },
+        "shopName": { "type": "string", "description": "Customer shop name." },
+        "city": { "type": "string", "description": "Customer city." },
+        "shopOrAddress": { "type": "string", "description": "Combined shop and address for checkout." },
+        "accountStatus": {
+          "type": "string",
+          "enum": ["pending", "approved", "blocked"],
+          "description": "Owner-controlled approval/block status."
+        },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp on last update." }
+      },
+      "required": [
+        "userId", "phoneNumber", "displayName", "shopName",
+        "city", "accountStatus", "createdAt", "updatedAt"
+      ]
+    },
+    "PhoneRegistry": {
+      "title": "PhoneRegistry",
+      "description": "Unique mobile number claim enforcing one account per phone number.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner UID of this mobile number." },
+        "phoneNumber": { "type": "string", "description": "Normalized +92 E.164 phone number." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation." }
+      },
+      "required": ["userId", "phoneNumber", "createdAt"]
+    },
+    "AdminRecord": {
+      "title": "AdminRecord",
+      "description": "Explicit admin allowlist record managed only by the verified owner.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "description": "Admin email address." },
+        "label": { "type": "string", "description": "Admin role label." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation." }
+      },
+      "required": ["email", "label", "createdAt"]
+    },
+    "BackupSnapshot": {
+      "title": "BackupSnapshot",
+      "description": "Owner-only cloud backup snapshot of catalog products and categories.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Backup label." },
+        "productCount": { "type": "integer", "description": "Number of backed up products." },
+        "categoryCount": { "type": "integer", "description": "Number of backed up categories." },
+        "productsBackup": { "type": "array", "description": "Backed up product maps." },
+        "categoriesBackup": { "type": "array", "description": "Backed up category maps." },
+        "createdByUid": { "type": "string", "description": "Owner UID who created the backup." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation." }
+      },
+      "required": ["title", "productCount", "categoryCount", "productsBackup", "categoriesBackup", "createdByUid", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/shop_info/{shopId}": {
+      "schema": { "$ref": "#/entities/ShopInfo" },
+      "description": "Shop identity and contact configuration document (main)."
+    },
+    "/categories/{categoryId}": {
+      "schema": { "$ref": "#/entities/Category" },
+      "description": "Wholesale grocery categories."
+    },
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Wholesale grocery catalog items with live prices and offers."
+    },
+    "/price_updates/{updateId}": {
+      "schema": { "$ref": "#/entities/PriceUpdate" },
+      "description": "Daily price update history log."
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Customer wholesale orders scoped by userId or accessible to the verified owner."
+    },
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Registered customer profiles with approval status, isolated per user or managed by owner."
+    },
+    "/phone_registry/{phoneKey}": {
+      "schema": { "$ref": "#/entities/PhoneRegistry" },
+      "description": "Enforces one registered account per mobile number."
+    },
+    "/admins/{adminId}": {
+      "schema": { "$ref": "#/entities/AdminRecord" },
+      "description": "Owner-managed admin allowlist."
+    },
+    "/backups/{backupId}": {
+      "schema": { "$ref": "#/entities/BackupSnapshot" },
+      "description": "Owner-only cloud backups for catalog restore."
+    }
+  }
+}

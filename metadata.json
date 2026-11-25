@@ -1,0 +1,6 @@
+{
+  "name": "من سلوٰی ٹریڈر",
+  "description": "Wholesale grocery catalog, daily rate updates, WhatsApp ordering, and secure owner admin dashboard for Mann Salwa Trader, Faisalabad.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
